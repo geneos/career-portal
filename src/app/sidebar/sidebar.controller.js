@@ -13,6 +13,9 @@ class CareerPortalSidebarController {
         this.locationLimitTo = 8;
         this.categoryLimitTo = 8;
 
+        //Set initial Categories
+        this.initParams();
+
         this.SearchService.findJobs();
         this.SearchService.getCountByLocation(this.setLocations());
         this.SearchService.getCountByCategory(this.setCategories());
@@ -36,6 +39,47 @@ class CareerPortalSidebarController {
             return this.SearchService.searchParams.location;
         }), this.updateFilterCountsAnonymous());
     }
+
+    initParams() {
+        this.initParamText();
+        this.initParamCategory();
+        this.initParamLocation();
+    }
+
+    initParamCategory() {
+         if (this.$location.search().category) {
+            var category = this.$location.search().category;
+            if (!angular.isArray(category)) {
+                this.SearchService.searchParams.category.push(parseInt(category));
+            }
+            else {
+                for (var i = 0 ; i < category.length ; i++) {
+                    this.SearchService.searchParams.category.push(parseInt(category[i]));
+                }
+            }
+        }
+    }
+
+    initParamText() {
+         if (this.$location.search().text) {
+            this.SearchService.searchParams.textSearch = this.$location.search().text;
+        }
+    }
+
+    initParamLocation() {
+         if (this.$location.search().location) {
+            var location = this.$location.search().location;
+            if (!angular.isArray(location)) {
+                this.SearchService.searchParams.location.push(location);
+            }
+            else {
+                for (var i = 0 ; i < location.length ; i++) {
+                    this.SearchService.searchParams.location.push(location[i]);
+                }
+            }
+        }
+    }
+
 
     updateLocationLimitTo(value) {
         this.locationLimitTo = value;
@@ -186,6 +230,7 @@ class CareerPortalSidebarController {
             let index = this.SearchService.searchParams.category.indexOf(key);
             this.SearchService.searchParams.category.splice(index, 1);
         }
+        console.log(this.SearchService.searchParams.category);
         this.searchJobs();
     }
 

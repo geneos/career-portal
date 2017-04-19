@@ -72,6 +72,20 @@ gulp.task('config:app', function () {
         };
     }
 
+    //Custon lang support
+    if (argv.defaultLocale) {
+        appConfig.defaultLocale = argv.defaultLocale;
+    } else {
+        console.log(chalk.red('Argument for defaultLocale not found, output might not be setup correctly. Supply the corpToken via the --defaultLocale flag.'));
+    }
+
+    //Custon lang support
+    if (argv.dateFormat) {
+        appConfig.dateFormat = argv.dateFormat;
+    } else {
+        console.log(chalk.red('Argument for dateFormat not found, output might not be setup correctly. Supply the corpToken via the --dateFormat flag.'));
+    }
+
     // EEOC fields on apply form
     appConfig.eeoc = appConfig.eeoc || {};
     appConfig.eeoc.genderRaceEthnicity = (argv.eeocAll === 'true' || argv.eeocGenderRaceEthnicity === 'true' || argv.eeocGRE === 'true');
